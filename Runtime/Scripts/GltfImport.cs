@@ -76,6 +76,8 @@ namespace GLTFast
     /// </summary>
     public class GltfImport : IGltfReadable, IGltfBuffers, IDisposable
     {
+        internal delegate bool CheckExtensionSupportDelegate(string extensionName);
+        internal static CheckExtensionSupportDelegate CheckSupportForUnknownExtension;
 
         /// <summary>
         /// Default value for a C# Job's innerloopBatchCount parameter.
@@ -1029,9 +1031,21 @@ namespace GLTFast
                         else
 #endif
                         {
-                            m_Logger?.Error(LogCode.ExtensionUnsupported, ext);
+                            if (CheckSupportForUnknownExtension != null)
+                            {
+                                supported = CheckSupportForUnknownExtension(ext);
+                            }
+
+                            if (!supported)
+                            {
+                                m_Logger?.Error(LogCode.ExtensionUnsupported, ext);
+                            }
                         }
-                        return false;
+
+                        if (!supported)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -1057,7 +1071,15 @@ namespace GLTFast
                         else
 #endif
                         {
-                            m_Logger?.Warning(LogCode.ExtensionUnsupported, ext);
+                            if (CheckSupportForUnknownExtension != null)
+                            {
+                                supported = CheckSupportForUnknownExtension(ext);
+                            }
+
+                            if (!supported)
+                            {
+                                m_Logger?.Warning(LogCode.ExtensionUnsupported, ext);
+                            }
                         }
                     }
                 }
