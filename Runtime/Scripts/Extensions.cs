@@ -64,6 +64,9 @@ namespace GLTFast
     /// </summary>
     public static class ExtensionName
     {
+        public delegate string GetUnknownNameDelegate(Extension extension);
+        public static GetUnknownNameDelegate GetUnknownName;
+
         /// <summary>
         /// <see href="https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_draco_mesh_compression/README.md">KHR_draco_mesh_compression</see> glTF extension
         /// </summary>
@@ -133,7 +136,7 @@ namespace GLTFast
                 case Extension.TextureTransform:
                     return TextureTransform;
                 default:
-                    return null;
+                    return GetUnknownName?.Invoke(extension) ?? null;
             }
         }
     }
