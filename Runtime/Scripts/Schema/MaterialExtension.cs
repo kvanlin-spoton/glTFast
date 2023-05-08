@@ -22,6 +22,8 @@ namespace GLTFast.Schema
     [System.Serializable]
     public partial class MaterialExtension
     {
+        internal delegate void SerializeDelegate(MaterialExtension materialExtension, JsonWriter writer);
+        internal static SerializeDelegate OnSerialize;
 
         // Names are identical to glTF specified property names, that's why
         // inconsistent names are ignored.
@@ -72,6 +74,7 @@ namespace GLTFast.Schema
                 writer.AddProperty("KHR_materials_sheen");
                 KHR_materials_sheen.GltfSerialize(writer);
             }
+            OnSerialize?.Invoke(this, writer);
             writer.Close();
         }
     }
