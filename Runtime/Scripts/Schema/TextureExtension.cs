@@ -20,8 +20,10 @@ namespace GLTFast.Schema
     /// Texture extensions
     /// </summary>
     [System.Serializable]
-    public class TextureExtension
+    public partial class TextureExtension
     {
+        internal delegate void SerializeDelegate(TextureExtension textureExtension, JsonWriter writer);
+        internal static SerializeDelegate OnSerialize;
 
         /// <inheritdoc cref="Extension.TextureBasisUniversal"/>
         // ReSharper disable once InconsistentNaming
@@ -29,7 +31,18 @@ namespace GLTFast.Schema
 
         internal void GltfSerialize(JsonWriter writer)
         {
-            throw new System.NotImplementedException($"GltfSerialize missing on {GetType()}");
+            if (KHR_texture_basisu != null || OnSerialize != null)
+            {
+                writer.AddObject();
+                if (KHR_texture_basisu != null)
+                {
+                    //writer.AddProperty("KHR_texture_basisu");
+                    //KHR_texture_basisu.GltfSerialize(writer);
+                    throw new System.NotImplementedException($"GltfSerialize missing on {GetType()}");
+                }
+                OnSerialize(this, writer);
+                writer.Close();
+            }
         }
     }
 
