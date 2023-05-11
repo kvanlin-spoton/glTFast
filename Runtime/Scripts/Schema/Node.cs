@@ -131,8 +131,11 @@ namespace GLTFast.Schema
     /// Node extensions
     /// </summary>
     [System.Serializable]
-    public class NodeExtensions
+    public partial class NodeExtensions
     {
+        internal delegate void SerializeDelegate(NodeExtensions nodeExtensions, JsonWriter writer);
+        internal static SerializeDelegate OnSerialize;
+
         // Names are identical to glTF specified properties, that's why
         // inconsistent names are ignored.
         // ReSharper disable InconsistentNaming
