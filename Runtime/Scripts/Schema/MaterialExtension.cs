@@ -25,6 +25,9 @@ namespace GLTFast.Schema
         internal delegate void SerializeDelegate(MaterialExtension materialExtension, JsonWriter writer);
         internal static SerializeDelegate OnSerialize;
 
+        internal delegate bool ValidateDelegate(MaterialExtension materialExtension);
+        internal static ValidateDelegate OnValidate;
+
         // Names are identical to glTF specified property names, that's why
         // inconsistent names are ignored.
         // ReSharper disable InconsistentNaming

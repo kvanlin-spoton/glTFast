@@ -17,7 +17,7 @@ namespace GLTFast.FakeSchema
 {
 
     [System.Serializable]
-    class MaterialExtension
+    partial class MaterialExtension
     {
         // ReSharper disable InconsistentNaming
         public string KHR_materials_pbrSpecularGlossiness;

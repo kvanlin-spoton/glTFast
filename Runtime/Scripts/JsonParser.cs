@@ -70,8 +70,11 @@ namespace GLTFast
                     }
                     else
                     {
-                        // otherwise dump the wrongfully constructed MaterialExtension
-                        mat.extensions = null;
+                        if (MaterialExtension.OnValidate?.Invoke(mat.extensions) == false)
+                        {
+                            // otherwise dump the wrongfully constructed MaterialExtension
+                            mat.extensions = null;
+                        }
                     }
                 }
             }
@@ -215,7 +218,10 @@ namespace GLTFast
                         if (e.EXT_mesh_gpu_instancing == null &&
                             e.KHR_lights_punctual == null)
                         {
-                            root.nodes[i].extensions = null;
+                            if (NodeExtensions.OnValidate?.Invoke(root.nodes[i].extensions) == false)
+                            {
+                                root.nodes[i].extensions = null;
+                            }
                         }
                     }
                 }
