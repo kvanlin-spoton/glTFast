@@ -166,6 +166,7 @@ namespace GLTFast.Schema
                 writer.AddProperty("KHR_lights_punctual");
                 KHR_lights_punctual.GltfSerialize(writer);
             }
+            OnSerialize?.Invoke(this, writer);
             writer.Close();
         }
     }
