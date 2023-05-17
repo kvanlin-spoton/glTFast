@@ -301,8 +301,11 @@ namespace GLTFast.Schema
     /// Mesh primitive extensions
     /// </summary>
     [Serializable]
-    public class MeshPrimitiveExtensions
+    public partial class MeshPrimitiveExtensions
     {
+        internal delegate void SerializeDelegate(MeshPrimitiveExtensions meshPrimitiveExtensions, JsonWriter writer);
+        internal static SerializeDelegate OnSerialize;
+
 #if DRACO_UNITY
         // ReSharper disable once InconsistentNaming
         public MeshPrimitiveDracoExtension KHR_draco_mesh_compression;
@@ -316,6 +319,8 @@ namespace GLTFast.Schema
                 KHR_draco_mesh_compression.GltfSerialize(writer);
             }
 #endif
+
+            OnSerialize?.Invoke(this, writer);
         }
     }
 

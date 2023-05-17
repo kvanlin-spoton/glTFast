@@ -131,8 +131,14 @@ namespace GLTFast.Schema
     /// Node extensions
     /// </summary>
     [System.Serializable]
-    public class NodeExtensions
+    public partial class NodeExtensions
     {
+        internal delegate void SerializeDelegate(NodeExtensions nodeExtensions, JsonWriter writer);
+        internal static SerializeDelegate OnSerialize;
+
+        internal delegate bool ValidateDelegate(NodeExtensions nodeExtensions);
+        internal static ValidateDelegate OnValidate;
+
         // Names are identical to glTF specified properties, that's why
         // inconsistent names are ignored.
         // ReSharper disable InconsistentNaming
@@ -160,6 +166,7 @@ namespace GLTFast.Schema
                 writer.AddProperty("KHR_lights_punctual");
                 KHR_lights_punctual.GltfSerialize(writer);
             }
+            OnSerialize?.Invoke(this, writer);
             writer.Close();
         }
     }
