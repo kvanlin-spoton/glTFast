@@ -2666,7 +2666,7 @@ namespace GLTFast
         Texture2D CreateEmptyTexture(Image img, int index, bool forceSampleLinear)
         {
 #if UNITY_2022_1_OR_NEWER
-            var textureCreationFlags = TextureCreationFlags.DontUploadUponCreate | TextureCreationFlags.DontInitializePixels;
+            var textureCreationFlags = /*TextureCreationFlags.DontUploadUponCreate |*/ TextureCreationFlags.DontInitializePixels;
 #else
             var textureCreationFlags = TextureCreationFlags.None;
 #endif
